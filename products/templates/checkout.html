@@ -1,0 +1,451 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Male-Fashion </title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/payment.css' %}" type="text/css">
+    <script src="https://www.paypal.com/sdk/js?client-id=ASN3VXxCf4LI_F9Kjba8LiU92AmMdqORjCgIVo4UrknXAQ2j1jxzII7Tdk0xtFLx_lYemY5JpaqzzA5_&currency=USD"></script>
+
+    <script>
+        var total = '{{order.get_cart_total}}'
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+            style:{
+                color:'blue',
+                shape:'rect'
+
+            },
+
+            // Call your server to set up the transaction
+           createOrder:function(data,actions){
+            return actions,order.create({
+                purchase_units:[{
+                    amount:{
+                        value:'0.01'
+                    }
+                }]
+            });
+           },
+           //finalize the transaction
+           onApproce:function(data,actions){
+                return actions.order.capture().then(function(details) {
+                    alert('transaction completed by ' + details.payer.name.given_name + '!' );
+                });
+            }
+
+        }).render('#paypal-button-container');
+    </script>
+    <script type="text/javascript" >
+        var user='{{request.user}}';
+        function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+    const csrftoken = getCookie('csrftoken');
+
+    </script>
+
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <a href="./signin.html">Sign in</a>
+                <a href="./login.html">LOGIN</a>
+            </div>
+            
+        </div>
+        <div class="offcanvas__nav__option">
+            <a href="#" class="search-switch"><img src="{% static 'img/icon/search.png' %}" alt=""></a>
+            <a href="./profile.html"><img src="{% static 'img/profile/default1.png' %}" alt=""></a>
+            <a href="./shopping-cart.html"><img src="{% static 'img/icon/cart.png' %}" alt=""> </a>
+           
+            
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7">
+                        <div class="header__top__left">
+                            <p>Hello {{user.username}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5">
+                        <div class="header__top__right">
+                            <div class="header__top__links">
+                                {% if user.is_authenticated %}
+                                <li>hello, {{user.username}}</li>
+                                <a href="/logout">logout</a>
+                                {% else %}
+                                <a href="./signin.html">Sign in</a>
+                                <a href="./login.html">LOGIN</a>
+                                {% endif %}
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href=" ./index.html"><img src="{% static  'img/logo.png' %}" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li class="active"><a href="./index.html">Home</a></li>
+                            <li><a href="./shop.html">Shop</a></li>
+                            <li><a href="#">Pages</a>
+                                <ul class="dropdown">
+                                   
+                                    <li><a href="./shopping-cart.html">Shopping Cart</a></li>
+                                    <li><a href="./checkout.html">Check Out</a></li>
+                                    <li><a href="./blog-details.html">Blog Details</a></li>
+                                   
+                                    <li><a href="./my-order.html">my order</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="./about.html ">About Us</a></li>
+                            <li><a href="./contact.html">Contacts</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        <a href="#" class="search-switch"><img src="{% static 'img/icon/search.png' %}" alt=""></a>
+                        <a href="./profile.html"><img src="{% static 'img/profile/default1.png' %}" alt=""></a>
+                        <a href="./shopping-cart.html"><img src="{% static 'img/icon/cart.png' %}" alt=""> <span></span></a>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Check Out</h4>
+                        <div class="breadcrumb__links">
+                            <a href="./index.html">Home</a>
+                            <a href="./shop.html">Shop</a>
+                            <span>Check Out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="checkout__form">
+                <form action="#" id="form">
+                    <div id="user-id">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6">
+                            
+                            <h6 class="checkout__title">Personal Details</h6>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>First Name<span>*</span></p>
+                                        <input type="text" name="name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Email<span>*</span></p>
+                                        <input type="email" name="email">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="shipping-info">
+                                <p class="checkout__title">Shipping Information</p>
+                            <div class="checkout__input">
+                                <p>Address<span>*</span></p>
+                                <input type="text" placeholder="Street Address" class="checkout__input__add" name="address">
+                                
+                            </div>
+                            <div class="checkout__input">
+                                <p>Town/City<span>*</span></p>
+                                <input type="text" name="city">
+                            </div>
+                            <div class="checkout__input">
+                                <p>Country/State<span>*</span></p>
+                                <input type="text" name="state">
+                            </div>
+                            <div class="checkout__input">
+                                <p>Postcode / ZIP<span>*</span></p>
+                                <input type="text" name="zipcode">
+                            </div>
+                        </div>
+                           
+                            
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="checkout__order">
+                                <h4 class="order__title">Your order</h4>
+                                <div class="checkout__order__products">Product <span>Total</span></div>
+                                <ul class="checkout__total__products">
+                                   {% for item in items %}
+                                    <li>{{item.product.name}} <span>{{item.product.price}}</span></li>
+                                    {% endfor %}
+                                    </div>
+                                </ul>
+                                <ul class="checkout__total__all">
+                                    <li>Total Items <span>{{order.get_cart_items}}</span></li>
+                                    <li>Total <span>{{order.get_cart_total}}</span></li>
+                                </ul>
+                                
+                                <p id="payment-info">Payment Methods</p>
+                        
+                                <div class="checkout__input__checkbox">
+                                    <label for="paypal">
+                                        Paypal
+                                       
+                                    </label>
+                                </div>
+                                <button id="make-payment" type="submit" class="site-btn">PLACE ORDER</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                 </form>
+            </div>
+        </div>
+        <br><br>
+        <center><i>This is a FAKE PAYMENT. Just for demo purpose</i></center>
+        <br><br><br>
+        <div class="container" style="text-align:center; padding-left:300px;">
+            <center>
+            <div class="row">
+                <div class="" style="height:500px; width:600px;">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="checkout__title">
+                                Payment Details
+                            </h3>
+                            <div class="checkbox pull-right">
+                                <label>
+                                    <input type="checkbox" />
+                                    Remember
+                                </label>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <center>
+                            <form role="form" method="post">
+                            <div class="form-group">
+                               
+                                <label for="cardNumber">
+                                    CARD NUMBER</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="cardNumber" placeholder="xxxx xxxx xxxx xxxx"
+                                        required autofocus />
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 col-md-4 pull-left">
+                                    <div class="form-group">
+                                        <label for="cvCode">
+                                            MONTH</label>
+                                        
+                                            <input type="text" class="form-control" id="expityMonth" placeholder="MM - 02" required />
+                                       
+                                    </div>
+                                </div>
+        
+                                <div class="col-xs-4 col-md-4">
+                                    <div class="form-group">
+                                        <label for="expityMonth">
+                                            EXPIRY DATE</label>
+                                       
+                                        
+                                       
+                                            <input type="text" class="form-control" id="expityYear" placeholder="YY - 22" required /></div>
+                                    
+                                </div>
+                                <div class="col-xs-4 col-md-4 pull-right">
+                                    <div class="form-group">
+                                        <label for="cvCode">
+                                            CV CODE</label>
+                                        <input type="password" class="form-control" id="cvCode" placeholder="CV - xxx" required />
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                            </center>
+                        </div>
+                    </div>
+                   
+                    <ul class="checkout__total__all">
+                        <li> <span>{{order.get_cart_total}}</span>Final payment</li>
+                        
+                    </ul>
+                    <br/>
+                   <div id="paypal-button-container"></div> 
+                </div>
+            </div>
+        </center>
+        <!--
+        <center><i>This is a FAKE PAYMENT. Just for demo purpose</i></center>
+        <br><br><br>
+        <div class="container" style="text-align:center; padding-left:300px;">
+            <center>
+            <div class="row">
+                <div class="" style="height:500px; width:600px;">
+                    
+                    <div id="paypal-button-container"></div> 
+                    
+                </div>
+            </div>
+        </center>
+    -->
+        </div>
+   
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#"><img src="{% static 'img/footer-logo.png' %}" alt=""></a>
+                        </div>
+                        <p>The customer is at the heart of our unique business model, which includes design.</p>
+                        <a href="#"><img src="{% static 'img/payment.png' %}" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="./shop.html">Clothing Store</a></li>
+                            <li><a href="./shop.html">Trending Shoes</a></li>
+                            <li><a href="./shop.html">Accessories</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="./contact.html">Contact Us</a></li>
+                            <li><a href="./checkout_view.html">Delivary</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>2020
+                            All rights reserved <i class="fa fa-heart-o"
+                            aria-hidden="true"></i>  <a href="https://colorlib.com" target="_blank"></a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form"  action="{% url 'search' %}">
+                {% csrf_token %}
+                <input type="text" id="search-input" placeholder="Search products here....." name="q">
+                <button class="btn btn-outline-secondary" type="submit">Search </button>
+            </form>
+            
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nicescroll.min.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'js/jquery.slicknav.js' %}"></script>
+    <script src="{% static 'js/mixitup.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/checkout.js' %}"></script>
+    
+</body>
+
+</html>
